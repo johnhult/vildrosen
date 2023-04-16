@@ -5,3 +5,4 @@ public
 dist
 src/gatsby-types.d.ts
 **/.DS_Store
+keys-sheets.json
