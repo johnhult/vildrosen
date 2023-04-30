@@ -1,61 +1,43 @@
-import * as React from "react"
-import { graphql } from "gatsby"
-import Layout from "../components/layout"
-import * as sections from "../components/sections"
-import Fallback from "../components/fallback"
-import SEOHead from "../components/head"
+import * as React from 'react';
+import * as Gatsby from 'gatsby';
+import Hero from 'components/Hero';
 
-interface HomepageProps {
-  data: {
-    homepage: {
-      id: string
-      title: string
-      description: string
-      image: { id: string; url: string }
-      blocks: sections.HomepageBlock[]
-    }
-  }
-}
+interface HomepageProps {}
 
 export default function Homepage(props: HomepageProps) {
-  const { homepage } = props.data
+  const handleClick = async () => {
+    try {
+      const id = 'someid';
+      const ya = await fetch(`/api/google-sheets?query=${id}`);
+      console.log(ya);
+
+      if (!ya.ok) {
+        throw new Error(ya.statusText);
+      }
+      const result = await ya.json();
+      console.log(result);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
-    <Layout>
-      {homepage.blocks.map((block) => {
-        const { id, blocktype, ...componentProps } = block
-        const Component = sections[blocktype] || Fallback
-        return <Component key={id} {...(componentProps as any)} />
-      })}
-    </Layout>
-  )
+    <>
+      <Hero
+        title={'Vildrosen'}
+        cta={{
+          label: 'Ansök nu!',
+          interaction: () => console.log('YEAHYEAHYEAG'),
+        }}
+      />
+      <div style={{ height: '400px', backgroundColor: 'red' }}>
+        <button onClick={() => handleClick()}>click me</button>
+      </div>
+      <div style={{ height: '400px', backgroundColor: 'lightblue' }}></div>
+      <div style={{ height: '400px', backgroundColor: 'cornflowerblue' }}></div>
+      <div style={{ height: '400px', backgroundColor: 'olive' }}></div>
+    </>
+  );
 }
-export const Head = (props: HomepageProps) => {
-  const { homepage } = props.data
-  return <SEOHead {...homepage} />
-}
-export const query = graphql`
-  {
-    homepage {
-      id
-      title
-      description
-      image {
-        id
-        url
-      }
-      blocks: content {
-        id
-        blocktype
-        ...HomepageHeroContent
-        ...HomepageFeatureListContent
-        ...HomepageCtaContent
-        ...HomepageLogoListContent
-        ...HomepageTestimonialListContent
-        ...HomepageBenefitListContent
-        ...HomepageStatListContent
-        ...HomepageProductListContent
-      }
-    }
-  }
-`
+
+export const Head: Gatsby.HeadFC = () => <title>Vildrosen</title>;
