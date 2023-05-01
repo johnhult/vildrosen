@@ -27,7 +27,7 @@ export default function Homepage(props: HomepageProps) {
         title={'Vildrosen'}
         cta={{
           label: 'Ansök nu!',
-          interaction: () => console.log('YEAHYEAHYEAG'),
+          interaction: () => '/ansokan',
         }}
       />
       <div style={{ height: '400px', backgroundColor: 'red' }}>

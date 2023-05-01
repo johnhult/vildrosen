@@ -3,21 +3,13 @@ import * as THREE from 'three';
 import {
   Center,
   ComputedAttribute,
-  GradientTexture,
-  Instance,
-  Instances,
-  Plane,
   Sampler,
-  Sphere,
   useGLTF,
   useTexture,
 } from '@react-three/drei';
 import { degToRad } from 'three/src/math/MathUtils';
-import { extend, useFrame } from '@react-three/fiber';
-import { rgba } from 'polished';
+import { useFrame } from '@react-three/fiber';
 import StylizedPineTree from '../Mesh/StylizedPineTree';
-import { GLTF } from 'three-stdlib';
-import { ThreeGradientTexture } from '../GradientTexture';
 
 type GroundProps = {
   repeat: number;
@@ -26,9 +18,13 @@ type GroundProps = {
 
 const Ground: React.FC<GroundProps> = ({ repeat, rotateWorld }) => {
   const geomRef = React.useRef<THREE.Mesh>(null!);
-  const instancesRef = React.useRef<
-    THREE.InstancedMesh<THREE.BufferGeometry, THREE.Material | THREE.Material[]>
-  >(null!);
+  const instancesRef =
+    React.useRef<
+      THREE.InstancedMesh<
+        THREE.BufferGeometry,
+        THREE.Material | THREE.Material[]
+      >
+    >(null);
   const tex = useTexture(
     {
       map: '/assets/textures/Stylized_Grass_BaseColor.png',
@@ -44,17 +40,40 @@ const Ground: React.FC<GroundProps> = ({ repeat, rotateWorld }) => {
       }
     }
   );
-  const gradientTexture = ThreeGradientTexture({
-    stops: [0, 0.5, 1],
-    colors: ['white', 'red', 'white'],
-  });
 
-  const computePath = (geo: THREE.BufferGeometry): THREE.BufferAttribute => {
-    const uv = geo.attributes.uv;
-    const arr = Float32Array.from({ length: uv.count });
-    console.log(uv);
-    return new THREE.BufferAttribute(arr, 1);
-  };
+  // Saving for remembering
+  // const gradientTexture = React.useMemo(
+  //   () =>
+  //     ThreeGradientTexture({
+  //       stops: [0, 0.4, 0.5, 0.6, 1],
+  //       colors: ['black', 'red', 'black', 'red', 'black'],
+  //     }),
+  //   []
+  // );
+
+  const computePath = React.useCallback(
+    () =>
+      (geo: THREE.BufferGeometry): THREE.BufferAttribute => {
+        //@ts-ignore-next-line
+        const { array, count } = geo.attributes.position;
+        const arr = Float32Array.from({ length: count });
+        const normalVector = new THREE.Vector3();
+        const up = new THREE.Vector3(0, 1, 0);
+        for (let i = 0; i < count; i++) {
+          const n = array.slice(i * 3, i * 3 + 3);
+
+          normalVector.set(n[0], n[1], n[2]);
+
+          const dot = normalVector.dot(up);
+          const value =
+            (dot > 50 || dot < -50) && !(dot > 200 || dot < -200) ? 1 : 0;
+          arr[i] = Number(value);
+        }
+
+        return new THREE.BufferAttribute(arr, 1);
+      },
+    []
+  );
 
   useFrame((_, delta) => {
     if (geomRef.current && rotateWorld) {
@@ -65,16 +84,10 @@ const Ground: React.FC<GroundProps> = ({ repeat, rotateWorld }) => {
 
   return (
     <>
-      <mesh receiveShadow position={[0, 30, 0]} rotation={[0, 0, degToRad(90)]}>
-        <sphereGeometry args={[20, 64, 64]}>
-          <ComputedAttribute name='removePath' compute={computePath} />
-        </sphereGeometry>
-        <meshBasicMaterial map={gradientTexture}></meshBasicMaterial>
-      </mesh>
       <Center bottom>
         <mesh ref={geomRef} receiveShadow rotation={[0, 0, degToRad(90)]}>
           <sphereGeometry args={[500, 64, 64]}>
-            <ComputedAttribute name='removePath' compute={computePath} />
+            <ComputedAttribute name='removePath' compute={computePath()} />
           </sphereGeometry>
           <meshStandardMaterial {...tex} />
           <StylizedPineTree ref={instancesRef} count={500} />
@@ -85,9 +98,10 @@ const Ground: React.FC<GroundProps> = ({ repeat, rotateWorld }) => {
         mesh={geomRef}
         weight='removePath'
         instances={instancesRef}
-        count={500}
+        count={200}
         transform={({ position, dummy: object, normal }, i) => {
-          object.scale.set(0.5, 0.5, 0.5);
+          const randScale = THREE.MathUtils.randFloat(0.3, 0.6);
+          object.scale.set(randScale, randScale, randScale);
           object.position.copy(position);
           object.lookAt(normal.add(position));
           object.rotateX(degToRad(90));

@@ -21,7 +21,7 @@ export function ThreeGradientTexture({ stops, colors, size = 1024 }: Props) {
     }
     context.fillStyle = gradient;
     context.fillRect(0, 0, 16, size);
-    return new THREE.Texture(canvas, THREE.UVMapping);
+    return new THREE.CanvasTexture(canvas, THREE.UVMapping);
   }, [stops, colors, size]);
   return texture;
 }

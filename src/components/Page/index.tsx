@@ -36,7 +36,7 @@ const GlobalStyles = createGlobalStyle`
     padding: 0;
     margin: 0;
     background-color: cadetblue;
-    overflow: hidden;
+    /* overflow: hidden; */
   }
   html {
     width: 100%;

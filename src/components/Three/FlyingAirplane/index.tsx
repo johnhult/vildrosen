@@ -17,7 +17,8 @@ const FlyingAirplane: React.FC<
 
   useFrame((state) => {
     if (ref.current) {
-      ref.current.position.x = -radius * Math.cos(state.clock.elapsedTime / 2);
+      ref.current.position.x =
+        (-radius / 2) * Math.cos(state.clock.elapsedTime / 2);
       ref.current.position.z = radius * Math.sin(state.clock.elapsedTime / 2);
       ref.current.position.y =
         height.current + 10 * Math.sin(state.clock.elapsedTime);

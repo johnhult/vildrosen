@@ -8,7 +8,7 @@ Title: Stylized Pine Tree Tree
 */
 
 import * as THREE from 'three';
-import React, { useRef } from 'react';
+import React from 'react';
 import { useGLTF } from '@react-three/drei';
 import { GLTF } from 'three-stdlib';
 
@@ -23,7 +23,6 @@ type GLTFResult = GLTF & {
 
 type StylizedPineTreeProps = {
   count: number;
-  // randomPos: [number, number, number];
 };
 
 const WithRef = React.forwardRef<

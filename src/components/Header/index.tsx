@@ -65,7 +65,6 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       const calculateResize = () => {
         clearTimeout(listener);
         setSize(window.visualViewport?.width || window.innerWidth);
-        console.log(window.visualViewport?.width || window.innerWidth);
       };
       const listener = setTimeout(calculateResize, 250);
     };

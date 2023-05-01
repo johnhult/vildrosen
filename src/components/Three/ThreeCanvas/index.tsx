@@ -1,7 +1,7 @@
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import CanvasContent from '../CanvasContent';
-import { Leva, useControls } from 'leva';
+import { Leva } from 'leva';
 
 type CanvasProps = {
   pointerRef: HTMLElement;

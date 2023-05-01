@@ -1,5 +1,5 @@
 import { Link } from 'gatsby';
-import { useGetGap } from 'helpers/style';
+import { minWidth, useGetGap } from 'helpers/style';
 import * as React from 'react';
 import styled, { DefaultTheme, ThemeProps } from 'styled-components';
 import ButtonBackground from 'assets/gfx/button.svg';
@@ -41,11 +41,14 @@ const StyledButton = styled.button`
   border-style: none;
   background: none;
   padding: ${() => `${useGetGap(6)} ${useGetGap(16)}`};
-  font-size: calc(36rem / 16);
+  font-size: calc(24rem / 16);
   font-family: 'Poppins';
   font-weight: 900;
   position: relative;
   user-select: 'none';
+  ${({ theme }) => minWidth(theme.breakpoints.tablet.asNumber)} {
+    font-size: calc(36rem / 16);
+  }
 
   &:hover {
     span:not(:first-of-type) {

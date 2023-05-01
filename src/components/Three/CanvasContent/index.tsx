@@ -24,10 +24,10 @@ const softShadowConfig = {
 };
 
 const CanvasContent: React.FC = () => {
-  const { debug, rotateWorld, useOrbit } = useControls({
+  const { debug, rotateWorld, orbitCamera } = useControls({
     debug: false,
     rotateWorld: true,
-    useOrbit: false,
+    orbitCamera: false,
   });
   const cameraRef = React.useRef<THREE.OrthographicCamera>(null);
   // @ts-ignore-next-line
@@ -36,7 +36,7 @@ const CanvasContent: React.FC = () => {
   return (
     <>
       <SoftShadows {...softShadowConfig} />
-      <fog attach='fog' args={['cadetblue', 100, 500]} />
+      {/* <fog attach='fog' args={['cadetblue', 100, 500]} /> */}
       <ambientLight intensity={0.4} />
       <directionalLight
         castShadow
@@ -57,7 +57,7 @@ const CanvasContent: React.FC = () => {
       </directionalLight>
       {/* <Sky inclination={0.55} azimuth={0.5} rayleigh={1} /> */}
       <CameraControls />
-      {useOrbit && <OrbitControls zoomSpeed={0.4} />}
+      {orbitCamera && <OrbitControls zoomSpeed={0.4} />}
       {/* <Center>
         <SetRandomColor>
           <Text3D font={'/assets/fonts/DynaPuff_Regular.json'} scale={10}>
