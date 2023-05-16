@@ -32,14 +32,17 @@ const WithRef = React.forwardRef<
   const { nodes, materials } = useGLTF(
     '/assets/mesh/stylized_pine_tree.glb'
   ) as GLTFResult;
+  // const normalMat = new THREE.MeshNormalMaterial();
   return (
     <instancedMesh
       args={[undefined, undefined, count]}
       ref={ref}
-      // castShadow
+      castShadow
       receiveShadow
+      frustumCulled={false}
       geometry={nodes.tree_low001_StylizedTree_0.geometry}
       material={materials.StylizedTree}
+      // material={normalMat}
     />
   );
 });

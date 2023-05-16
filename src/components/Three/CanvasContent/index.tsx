@@ -16,33 +16,42 @@ import { Airplane } from '../Mesh/Airplane';
 import FlyingAirplane from '../FlyingAirplane';
 import Ground from '../Ground';
 import { useControls } from 'leva';
+import { EffectComposer } from '@react-three/postprocessing';
+import FrameEffect from 'components/Three/Effects/FrameEffect';
 
 const softShadowConfig = {
-  size: 10,
-  focus: 1,
-  samples: 10,
+  size: 30,
+  focus: 0,
+  samples: 5,
 };
 
 const CanvasContent: React.FC = () => {
-  const { debug, rotateWorld, orbitCamera } = useControls({
+  const { debug, performance, rotateWorld, orbitCamera } = useControls({
     debug: false,
+    performance: false,
     rotateWorld: true,
     orbitCamera: false,
   });
-  const cameraRef = React.useRef<THREE.OrthographicCamera>(null);
+  const frameEffect = new FrameEffect();
+  const cameraRef = React.useRef<THREE.OrthographicCamera>(null!);
   // @ts-ignore-next-line
   useHelper(debug && cameraRef, THREE.CameraHelper);
 
   return (
     <>
+      <EffectComposer>
+        <primitive object={frameEffect} />
+      </EffectComposer>
       <SoftShadows {...softShadowConfig} />
-      {/* <fog attach='fog' args={['cadetblue', 100, 500]} /> */}
+      <fog attach='fog' args={['cadetblue', 100, 500]} />
       <ambientLight intensity={0.4} />
       <directionalLight
         castShadow
-        position={[20, 100, 100]}
+        position={[20, 300, 300]}
         color='navajowhite'
         intensity={2}
+        shadow-bias={-0.01}
+        shadow-mapSize={[2048, 2048]}
       >
         {debug && (
           <Sphere scale={1}>
@@ -52,20 +61,12 @@ const CanvasContent: React.FC = () => {
         <orthographicCamera
           ref={cameraRef}
           attach='shadow-camera'
-          args={[-200, 200, -200, 200, 1, 500]}
+          args={[-300, 300, -300, 300, 100, 600]}
         />
       </directionalLight>
-      {/* <Sky inclination={0.55} azimuth={0.5} rayleigh={1} /> */}
       <CameraControls />
       {orbitCamera && <OrbitControls zoomSpeed={0.4} />}
-      {/* <Center>
-        <SetRandomColor>
-          <Text3D font={'/assets/fonts/DynaPuff_Regular.json'} scale={10}>
-            Vildrosen
-          </Text3D>
-        </SetRandomColor>
-      </Center> */}
-      {debug && <Stats />}
+      {performance && <Stats />}
       <Center top>
         <RotateWithMouse rotateZ>
           <ChangeMaterial>
@@ -78,31 +79,9 @@ const CanvasContent: React.FC = () => {
           <Airplane />
         </Center>
       </FlyingAirplane>
-      {/* <Plane scale={10000} receiveShadow rotation-x={degToRad(-90)}>
-        <shadowMaterial
-          transparent
-          opacity={0.4}
-          color='#3a1d01'
-        ></shadowMaterial>
-      </Plane> */}
-      {/* <StylizedPineTree /> */}
       <RotateWithMouse>
-        <Ground repeat={20} rotateWorld={rotateWorld} />
+        <Ground repeat={25} rotateWorld={rotateWorld} />
       </RotateWithMouse>
-      {/* <Center bottom>
-        <Sphere
-          receiveShadow
-          args={[1, 32, 32]}
-          scale={500}
-          rotation={[0, 0, degToRad(90)]}
-        >
-          <meshStandardMaterial color='green' map={abstract} />
-        </Sphere>
-      </Center> */}
-      {/* <RotateWithMouse>
-        <Ground />
-      </RotateWithMouse> */}
-      {/* <Environment preset='sunset' /> */}
     </>
   );
 };

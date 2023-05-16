@@ -3,7 +3,11 @@ import { DefaultTheme } from 'styled-components';
 const themeBase = {
   gap: {
     base: 4,
-    menu: 80,
+    menu: 60,
+    section: {
+      y: { desktop: 64, mobile: 32 },
+      x: { desktop: 32, mobile: 16 },
+    },
   },
   radius: {
     small: 4,
@@ -28,11 +32,11 @@ const sharedColors = {
 export const lightTheme: DefaultTheme = {
   name: 'light',
   colors: {
-    body: '#ffffff',
+    background: '#fff',
     text: '#162025',
     border: '#6d8095',
-    cta: '#ffb600',
-    ctaText: '#c50043',
+    cta: '#ffd900',
+    ctaText: '#d74100',
     ...sharedColors,
   },
   ...themeBase,
@@ -40,7 +44,7 @@ export const lightTheme: DefaultTheme = {
 export const darkTheme: DefaultTheme = {
   name: 'dark',
   colors: {
-    body: '#1a242e',
+    background: '#1a242e',
     text: '#ffffff',
     border: '#2d3946',
     cta: '#228A88',

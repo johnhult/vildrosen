@@ -90,7 +90,7 @@ const Ground: React.FC<GroundProps> = ({ repeat, rotateWorld }) => {
             <ComputedAttribute name='removePath' compute={computePath()} />
           </sphereGeometry>
           <meshStandardMaterial {...tex} />
-          <StylizedPineTree ref={instancesRef} count={500} />
+          <StylizedPineTree visible={false} ref={instancesRef} count={500} />
         </mesh>
       </Center>
       <Sampler
@@ -98,9 +98,9 @@ const Ground: React.FC<GroundProps> = ({ repeat, rotateWorld }) => {
         mesh={geomRef}
         weight='removePath'
         instances={instancesRef}
-        count={200}
+        count={250}
         transform={({ position, dummy: object, normal }, i) => {
-          const randScale = THREE.MathUtils.randFloat(0.3, 0.6);
+          const randScale = THREE.MathUtils.randFloat(0.3, 0.7);
           object.scale.set(randScale, randScale, randScale);
           object.position.copy(position);
           object.lookAt(normal.add(position));

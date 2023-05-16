@@ -1,6 +1,6 @@
 import { useThree } from '@react-three/fiber';
 import * as THREE from 'three';
-import { validateSkinnedMesh } from 'lib/Mesh';
+import { validateSkinnedMesh } from 'lib/Three';
 import * as React from 'react';
 
 const ChangeMaterial: React.FC<React.PropsWithChildren> = ({ children }) => {

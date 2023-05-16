@@ -10,11 +10,13 @@ export enum HeaderTypes {
 }
 
 interface HeaderProps {
+  color?: string;
   fancy?: boolean;
   mb?: boolean;
   type: HeaderTypes;
 }
 type HeaderStyleProps = {
+  $color?: string;
   $fancy?: boolean;
   $mb?: boolean;
   $type?: HeaderTypes;
@@ -29,8 +31,9 @@ type LetterStyleProps = {
 
 const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   fancy,
-  type,
+  color,
   mb,
+  type,
   children,
   ...props
 }) => {
@@ -58,7 +61,11 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
     return [];
   }, [children, theme]);
   const StyledHeader = headers[type];
-  const [size, setSize] = React.useState(window.visualViewport?.width || 0);
+  const [size, setSize] = React.useState(
+    typeof window !== 'undefined' && window.visualViewport
+      ? window.visualViewport?.width
+      : 0
+  );
 
   React.useEffect(() => {
     const debounceResize = () => {
@@ -95,13 +102,6 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
               $index={i}
               $rotate={degree * i - arc / 2}
               $radius={radius}
-              // style={{
-              //   height: `${radius}px`,
-              //   transform: `rotate(${
-              //     degree * i - arc / 2
-              //   }deg) translate3D(5px,5px, 0)`,
-              //   transformOrigin: `0 ${radius}px 0`,
-              // }}
             >
               {char}
             </Letter>
@@ -110,11 +110,6 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
               $index={i}
               $rotate={degree * i - arc / 2}
               $radius={radius}
-              // style={{
-              //   height: `${radius}px`,
-              //   transform: `rotate(${degree * i - arc / 2}deg)`,
-              //   transformOrigin: `0 ${radius}px 0`,
-              // }}
             >
               {char}
             </Letter>
@@ -129,7 +124,13 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
   );
 
   return (
-    <StyledHeader $fancy={fancy} $mb={mb} $type={type} {...props}>
+    <StyledHeader
+      $color={color}
+      $fancy={fancy}
+      $mb={mb}
+      $type={type}
+      {...props}
+    >
       {type === HeaderTypes.HERO ? makeArc(children) : children}
     </StyledHeader>
   );
@@ -139,7 +140,7 @@ export default Header;
 
 const baseHeader = css<HeaderStyleProps>`
   display: inline-flex;
-  color: ${({ theme }) => theme.colors.text};
+  color: ${({ theme, $color }) => ($color ? $color : theme.colors.text)};
   background-image: ${({ theme, $fancy, $type }) =>
     $fancy && $type !== HeaderTypes.HERO
       ? theme.name === 'light'
@@ -150,7 +151,7 @@ const baseHeader = css<HeaderStyleProps>`
   -webkit-background-clip: text;
   background-size: 100%;
   -webkit-text-fill-color: ${({ $type }) =>
-    $type === HeaderTypes.HERO ? '' : 'transparent'};
+    $type === HeaderTypes.HERO ? '' : 'initial'};
   margin: 0;
   margin-bottom: ${({ $mb }) => ($mb ? '1rem' : undefined)};
   font-family: 'DynaPuff', serif;

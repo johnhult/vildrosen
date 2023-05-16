@@ -1,4 +1,11 @@
 {
   "plugins": ["babel-plugin-glsl"],
-  "presets": ["babel-preset-gatsby"]
+  "presets": [
+    [
+      "babel-preset-gatsby",
+      {
+        "targets": ["supports es6-module"]
+      }
+    ]
+  ]
 }

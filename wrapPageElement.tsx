@@ -1,5 +1,5 @@
 import React from 'react';
-import Page from './src/components/Page';
+import Page from './src/components/GlobalPage';
 
 // Wraps every page in a component
 const wrapPageElement = ({ element, props }) => {
