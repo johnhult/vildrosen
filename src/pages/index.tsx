@@ -73,7 +73,7 @@ export default function Homepage(props: HomepageProps) {
         }
       />
       <InformationSection>
-        <Header type={HeaderTypes.H2} mb>
+        <Header type={HeaderTypes.H2} mb fancy>
           Vår pedagogiska verksamhet
         </Header>
         <Text>

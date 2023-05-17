@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Wave from 'assets/gfx/wave-pattern.svg';
 import { degToRad } from 'three/src/math/MathUtils';
 import { useGetGap } from 'helpers/style';
-import useResize from 'hooks/useResize';
+import { useResize } from 'context/ResizeContext';
 
 type WaveProps = {
   bg?: string;

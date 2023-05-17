@@ -3,7 +3,8 @@ import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import ThemeChangeProvider, { useGetTheme } from 'context/ThemeChangeContext';
 import ThreeLazy from 'components/Three/ThreeLazy';
 import Menu from 'components/Menu';
-import backgroundImage from 'assets/images/background.png';
+import backgroundImage from 'assets/images/background-colored.png';
+import ResizeProvider from 'context/ResizeContext';
 
 const StyledTheme: React.FC<React.PropsWithChildren> = ({ children }) => {
   const theme = useGetTheme();
@@ -20,14 +21,16 @@ const Global: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <>
-      <ThemeChangeProvider>
-        <StyledTheme>
-          <GlobalStyles />
-          <Menu />
-          <main>{children}</main>
-          <ThreeLazy pointerRef={pointerRef} />
-        </StyledTheme>
-      </ThemeChangeProvider>
+      <ResizeProvider>
+        <ThemeChangeProvider>
+          <StyledTheme>
+            <GlobalStyles />
+            <Menu />
+            <main>{children}</main>
+            <ThreeLazy pointerRef={pointerRef} />
+          </StyledTheme>
+        </ThemeChangeProvider>
+      </ResizeProvider>
     </>
   );
 };

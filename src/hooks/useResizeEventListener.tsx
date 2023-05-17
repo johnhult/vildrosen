@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-const useResize = () => {
+const useResizeEventListener = () => {
   // We use windowSize for triggering rerenders
   const [windowSize, setWindowSize] = React.useState({ w: 0, h: 0 });
 
@@ -23,4 +23,4 @@ const useResize = () => {
   return windowSize;
 };
 
-export default useResize;
+export default useResizeEventListener;

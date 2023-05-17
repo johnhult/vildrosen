@@ -2,7 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import Link from 'components/Link';
 import { useGetGap } from 'helpers/style';
-import bg from 'assets/images/background.png';
+import bg from 'assets/images/background-colored.png';
 
 type StyleProps = {
   $doc: number;
