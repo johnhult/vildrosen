@@ -5,10 +5,10 @@ import WaveSection from 'components/WaveSection';
 import { useTheme } from 'styled-components';
 import Header, { HeaderTypes } from 'components/Header';
 import Text from 'components/Text';
-import { useGetGap } from 'helpers/style';
 import SpeechBubbleSection from 'components/SpeechBubbleSection';
 import ImageCarousel from 'components/ImageCarousel';
 import InformationSection from 'components/InformationSection';
+import EndingSection from 'components/EndingSection';
 
 interface HomepageProps {}
 
@@ -40,7 +40,7 @@ export default function Homepage(props: HomepageProps) {
         cta={{
           label: 'Ansök nu!',
           ariaLabel: 'Gå till ansökan',
-          interaction: '/ansokan',
+          interaction: '/ansok',
         }}
       />
       <WaveSection bg={theme.colors.palette[4]}>
@@ -97,6 +97,15 @@ export default function Homepage(props: HomepageProps) {
           18).
         </Text>
       </InformationSection>
+      <EndingSection
+        title='Hej igen'
+        text='Tycker du det låter intressant så skicka iväg en ansökan.'
+        button={{
+          interaction: '/ansok',
+          label: 'Ansök nu!',
+          ariaLabel: 'Gå till ansökan',
+        }}
+      />
       {/* <div style={{ height: '400px', backgroundColor: 'red' }}>
         <button onClick={() => handleClick()}>click me</button>
       </div>

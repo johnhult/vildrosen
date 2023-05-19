@@ -7,20 +7,25 @@ export enum HeaderTypes {
   H1 = 'h1',
   H2 = 'h2',
   H3 = 'h3',
+  SMALL = 'small',
 }
 
-interface HeaderProps {
+type HeaderProps = {
+  as?: keyof JSX.IntrinsicElements;
   color?: string;
   fancy?: boolean;
   mb?: boolean;
   type: HeaderTypes;
-}
+};
+
 type HeaderStyleProps = {
+  as?: keyof JSX.IntrinsicElements;
   $color?: string;
   $fancy?: boolean;
   $mb?: boolean;
   $type?: HeaderTypes;
 };
+
 type LetterStyleProps = {
   $shadowStyle?: boolean;
   $randomColor?: string;
@@ -30,6 +35,7 @@ type LetterStyleProps = {
 };
 
 const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
+  as,
   fancy,
   color,
   mb,
@@ -129,6 +135,8 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
       $fancy={fancy}
       $mb={mb}
       $type={type}
+      //@ts-ignore-next-line Using imperative declaration somehow breaks TS
+      as={as}
       {...props}
     >
       {type === HeaderTypes.HERO ? makeArc(children) : children}
@@ -139,6 +147,8 @@ const Header: React.FC<React.PropsWithChildren<HeaderProps>> = ({
 export default Header;
 
 const baseHeader = css<HeaderStyleProps>`
+  word-break: normal;
+  hyphens: auto;
   display: inline-flex;
   color: ${({ theme, $color }) => ($color ? $color : theme.colors.text)};
   background-image: ${({ theme, $fancy, $type }) =>
@@ -170,7 +180,7 @@ const movement = (shadow: boolean, rotate: number) => keyframes`
   }
 `;
 
-const HeroStyled = styled('h1')<HeaderStyleProps>`
+const HeroStyled = styled.h1<HeaderStyleProps>`
   ${baseHeader}
   display: block;
   font-size: calc(64rem / 16);
@@ -193,18 +203,25 @@ const Letter = styled.span<LetterStyleProps>`
   animation: ${({ $shadowStyle, $rotate }) => movement(!!$shadowStyle, $rotate)}
     2s infinite ${({ $index }) => $index * 0.2}s ease-in-out alternate;
 `;
-const H1Styled = styled('h1')<HeaderStyleProps>`
+const H1Styled = styled.h1<HeaderStyleProps>`
   ${baseHeader}
   font-size: calc(32rem / 16);
   font-weight: 700;
 `;
-const H2Styled = styled('h2')`
+const H2Styled = styled.h2<HeaderStyleProps>`
   ${baseHeader}
   font-size: calc(28rem / 16);
+  font-weight: 600;
 `;
-const H3Styled = styled('h3')`
+const H3Styled = styled.h3<HeaderStyleProps>`
   ${baseHeader}
   font-size: calc(24rem / 16);
+  font-weight: 700;
+`;
+const Small = styled.span<HeaderStyleProps>`
+  ${baseHeader}
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  font-size: calc(14rem / 16);
   font-weight: 700;
 `;
 
@@ -213,4 +230,5 @@ const headers = {
   h1: H1Styled,
   h2: H2Styled,
   h3: H3Styled,
+  small: Small,
 };

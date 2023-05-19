@@ -31,8 +31,12 @@ const Hero: React.FC<HeroProps> = ({ title, cta, ingress }) => {
 
 const StyledHero = styled.section`
   overflow: hidden;
-  height: 100%;
-  min-height: 600px;
+  height: 100vh;
+  min-height: 100vh;
+  min-height: -moz-available;
+  min-height: -webkit-fill-available;
+  min-height: fill-available;
+  /* min-height: 600px; */
   width: 100%;
   display: flex;
   flex-direction: column;

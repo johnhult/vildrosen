@@ -1,12 +1,11 @@
 import * as React from 'react';
 import * as THREE from 'three';
-import { useGetGap, useGetGapNumber } from 'helpers/style';
+import { useGetGap } from 'helpers/style';
 import styled from 'styled-components';
 import { transparentize } from 'polished';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { Html, OrbitControls, Plane, useTexture } from '@react-three/drei';
-import { validatePerspectiveCamera } from 'lib/Three';
-import { degToRad, lerp, mapLinear, radToDeg } from 'three/src/math/MathUtils';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Plane, useTexture } from '@react-three/drei';
+import { degToRad, lerp, mapLinear } from 'three/src/math/MathUtils';
 import { cover } from 'helpers/three';
 import Header, { HeaderTypes } from 'components/Header';
 
@@ -66,37 +65,16 @@ const ImageCarouselCanvasContent: React.FC<ImageCarouselProps> = ({
       }
     }
   );
-  const { camera } = useThree();
-  const fovNr = React.useMemo(() => {
-    if (validatePerspectiveCamera(camera)) {
-      const dist = camera.position.z;
-      // convert vertical fov to radians
-      const vFOV = THREE.MathUtils.degToRad(camera.fov);
-      // visible height
-      const height = 2 * Math.tan(vFOV / 2) * dist;
-      // visible width
-      const width = height * camera.aspect;
-      return { width, height };
-    }
-    return { width: 0, height: 0 };
-  }, [camera]);
 
   // --------- Effects
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (groupRef.current) {
       const { current: g } = groupRef;
       g.position.z = -inradius;
     }
-  });
-  // React.useEffect(() => {
-  //   imageTextures.forEach((tex, i) => {
-  //     // tex.
-  //     console.log(tex.matrix);
-  //   });
-  // }, [imageTextures, planesRef]);
+  }, [inradius]);
 
-  let a = 0;
-  useFrame((state, delta) => {
+  useFrame((state) => {
     if (groupRef.current) {
       const { current: g } = groupRef;
       const rotY = state.mouse.x * Math.PI;
@@ -104,7 +82,7 @@ const ImageCarouselCanvasContent: React.FC<ImageCarouselProps> = ({
 
       // Half the angle between every image 2π/x*1/2 = π/x
       const angleAtEdge = Math.PI / images.length;
-      // Map rotation to -1,1
+      // Map rotation (minus half image angle) to 0,NrOfImg and add offset
       const mapped =
         mapLinear(
           rotY - angleAtEdge,
@@ -132,18 +110,6 @@ const ImageCarouselCanvasContent: React.FC<ImageCarouselProps> = ({
         const sc = lerp(pri.scale.x, 1.2, 0.1);
         pri.scale.set(sc, sc, sc);
       }
-
-      // if (a % 240 === 0) {
-      //   console.log({
-      //     index,
-      //     mapped,
-      //     rotY: radToDeg(rotY),
-      //     rotYSub: radToDeg(rotY - angleAtEdge),
-      //     halfAngle: radToDeg(angleAtEdge),
-      //   });
-      // }
-
-      a++;
     }
   });
 
@@ -180,9 +146,11 @@ const ImageCarouselCanvasContent: React.FC<ImageCarouselProps> = ({
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, header }) => {
   const wrapper = React.useRef<HTMLDivElement>(null);
+  const [pointerRef, setPointerRef] = React.useState<HTMLElement | null>(null);
   const [showCanvas, setShowCanvas] = React.useState(false);
 
   React.useLayoutEffect(() => {
+    setPointerRef(document.getElementsByTagName('html')[0]);
     if (wrapper.current) {
       setShowCanvas(true);
     }
@@ -193,7 +161,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, header }) => {
       <Header type={HeaderTypes.H3} mb>
         {header}
       </Header>
-      {showCanvas && (
+      {showCanvas && pointerRef && (
         <Canvas
           camera={{
             fov: 75,
@@ -204,6 +172,8 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images, header }) => {
               ? innerDimensions(wrapper.current).width / 500
               : 0,
           }}
+          eventSource={pointerRef}
+          eventPrefix='screen'
           style={{ height: '500px' }}
         >
           <ImageCarouselCanvasContent images={images} />
@@ -220,7 +190,7 @@ const StyledWrapper = styled.section`
   position: relative;
   padding: ${() => useGetGap(16)} 0;
   background-color: ${({ theme }) =>
-    transparentize(0.3, theme.colors.palette[2])};
+    transparentize(0.3, theme.colors.palette[3])};
   overflow: hidden;
 `;
 

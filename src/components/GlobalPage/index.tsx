@@ -5,6 +5,7 @@ import ThreeLazy from 'components/Three/ThreeLazy';
 import Menu from 'components/Menu';
 import backgroundImage from 'assets/images/background-colored.png';
 import ResizeProvider from 'context/ResizeContext';
+import Footer from 'components/Footer';
 
 const StyledTheme: React.FC<React.PropsWithChildren> = ({ children }) => {
   const theme = useGetTheme();
@@ -28,6 +29,7 @@ const Global: React.FC<React.PropsWithChildren> = ({ children }) => {
             <Menu />
             <main>{children}</main>
             <ThreeLazy pointerRef={pointerRef} />
+            <Footer />
           </StyledTheme>
         </ThemeChangeProvider>
       </ResizeProvider>
@@ -70,6 +72,6 @@ const GlobalStyles = createGlobalStyle`
   }
   
   main {
-    height: 100%;
+    /* height: 100%; */
   }
 `;

@@ -25,6 +25,7 @@ const sharedColors = {
   black: '#000000',
   dark: '#151617',
   white: '#ffffff',
+  light: '#e3e3e3',
   headerShadow: '#320152',
   palette,
 };

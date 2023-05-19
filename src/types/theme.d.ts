@@ -35,15 +35,16 @@ declare module 'styled-components' {
     name: string;
     colors: {
       background: string;
-      text: string;
-      dark: string;
       black: string;
-      white: string;
       border: string;
       cta: string;
       ctaText: string;
+      dark: string;
       headerShadow: string;
+      light: string;
       palette: string[];
+      text: string;
+      white: string;
     };
   }
 }
