@@ -35,7 +35,7 @@ export default function Homepage(props: HomepageProps) {
       <Hero
         title={'Vildrosen'}
         ingress={
-          'En kooperativ förskola för alla barn som ska få vara precis hur de vill.'
+          'En kooperativ förskola för alla barn som ska få vara precis hur de vill. En kooperativ förskola för alla barn som ska få vara precis hur de vill.'
         }
         cta={{
           label: 'Ansök nu!',

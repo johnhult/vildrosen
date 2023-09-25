@@ -56,15 +56,17 @@ const StyledHero = styled.section`
 `;
 
 const StyledInfo = styled.div`
-  width: 500px;
   text-align: center;
   max-width: 100%;
   background-color: white;
   position: relative;
-  display: flex;
+  display: inline-flex;
   flex-direction: column;
   align-items: center;
   padding: ${() => useGetGap(4)} ${() => useGetGap(4)};
+  p {
+    max-width: 500px;
+  }
   &::before {
     content: '';
     display: block;

@@ -2,8 +2,11 @@ import * as React from 'react';
 import { minWidth, pX, pY } from 'helpers/style';
 import styled from 'styled-components';
 
-const SectionWrapper: React.FC<React.PropsWithChildren> = ({ children }) => {
-  return <StyledSectionWrapper>{children}</StyledSectionWrapper>;
+const SectionWrapper: React.FC<React.PropsWithChildren> = ({
+  children,
+  ...props
+}) => {
+  return <StyledSectionWrapper {...props}>{children}</StyledSectionWrapper>;
 };
 
 const StyledSectionWrapper = styled.section`

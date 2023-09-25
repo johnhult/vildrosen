@@ -22,6 +22,7 @@ const Text: React.FC<React.PropsWithChildren<TextProps>> = ({
 };
 
 const StyledText = styled.p<StyledTextProps>`
+  display: block;
   font-size: calc(16rem / 16);
   line-height: 1.6em;
   margin-top: 0;

@@ -1,7 +1,7 @@
 import Button, { ButtonProps } from 'components/Button';
 import Divider from 'components/Divider';
 import Header, { HeaderTypes } from 'components/Header';
-import { minWidth, pX, pY, useGetGap, useGetGapNumber } from 'helpers/style';
+import { minWidth, pX, pY, useGetGap } from 'helpers/style';
 import * as React from 'react';
 import styled, { useTheme } from 'styled-components';
 
@@ -58,6 +58,7 @@ const StyledWrapper = styled.section`
 
 const StyledCenterWrapper = styled.div`
   width: 1200px;
+  max-width: 100%;
   margin: auto;
 `;
 

@@ -20,12 +20,14 @@ const Menu = () => {
   React.useEffect(() => {
     htmlHeight.current = document.documentElement.scrollHeight;
     if (scroll.current) {
-      if (windowSize.w >= 1200) {
+      if (windowSize.w >= 1200 + parseInt(defaultParallaxPosX)) {
         parallaxLeft.current = windowSize.w / 2 - 1200 / 2;
         scroll.current.style.left = `-${parallaxLeft.current}px`;
         scroll.current.style.width = `${windowSize.w}px`;
       } else {
-        scroll.current.style.left = defaultParallaxPosX;
+        scroll.current.style.left = `-${defaultParallaxPosX}`;
+        scroll.current.style.width = `calc(100% + ${() =>
+          defaultParallaxPosX})`;
       }
     }
   }, [windowSize, defaultParallaxPosX]);
@@ -57,7 +59,7 @@ const Menu = () => {
       <StyledMenu>
         <LinkWrapper>
           <MenuLink to='/'>Hem</MenuLink>
-          <MenuLink to='/ansokan'>Ansökan</MenuLink>
+          <MenuLink to='/ansokan'>Ansök</MenuLink>
           <MenuLink to='/barnen'>Barnen</MenuLink>
           <MenuLink to='/foraldrar'>Föräldrarna</MenuLink>
           <MenuLink to='/pedagogerna'>Pedagogerna</MenuLink>
